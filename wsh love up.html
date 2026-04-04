@@ -1,6 +1,133 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Interactive Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            cursor: none; /* 隐藏原生鼠标，使用自定义光标 */
+            background-color: #064e3b;
+            overflow: hidden;
+        }
+
+        /* 自定义光标 */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #34d399;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            border-radius: 50%;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(52, 211, 153, 0.5);
+            position: fixed;
+            pointer-events: none;
+            z-index: 998;
+            border-radius: 50%;
+            transition: transform 0.15s ease-out;
+        }
+
+        /* 选项卡玻璃拟态效果 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(52, 211, 153, 0.3);
+            border-color: rgba(52, 211, 153, 0.5);
+        }
+
+        /* 图标发光效果 */
+        .icon-glow {
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover .icon-glow {
+            text-shadow: 0 0 15px #34d399;
+            transform: rotate(10deg);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+
+    <div id="app" class="w-full max-w-6xl px-10">
+        <div class="cursor-dot" :style="{ left: mouseX + 'px', top: mouseY + 'px' }"></div>
+        <div class="cursor-outline" :style="{ left: (mouseX - 16) + 'px', top: (mouseY - 16) + 'px' }"></div>
+
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold text-emerald-400 mb-4 tracking-widest uppercase">Ecology Vision</h1>
+            <p class="text-emerald-200/60">探索自然的交互之美</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+            <div v-for="(item, index) in options" :key="index" 
+                 class="glass-card p-8 rounded-3xl flex flex-col items-center justify-center group cursor-pointer">
+                
+                <div class="mb-6">
+                    <i :class="[item.icon, 'text-5xl text-emerald-400 icon-glow']"></i>
+                </div>
+                
+                <span class="text-emerald-100 font-medium tracking-wide text-lg">{{ item.label }}</span>
+                
+                <div class="w-0 h-1 bg-emerald-400 mt-4 group-hover:w-full transition-all duration-500"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, onMounted, onUnmounted } = Vue;
+
+        createApp({
+            setup() {
+                const mouseX = ref(0);
+                const mouseY = ref(0);
+
+                const options = ref([
+                    { label: '森林', icon: 'fa-solid fa-tree' },
+                    { label: '能源', icon: 'fa-solid fa-bolt' },
+                    { label: '水源', icon: 'fa-solid fa-droplet' },
+                    { label: '物种', icon: 'fa-solid fa-hippo' },
+                    { label: '回收', icon: 'fa-solid fa-recycle' }
+                ]);
+
+                const updateMouse = (e) => {
+                    mouseX.value = e.clientX;
+                    mouseY.value = e.clientY;
+                };
+
+                onMounted(() => {
+                    window.addEventListener('mousemove', updateMouse);
+                });
+
+                onUnmounted(() => {
+                    window.removeEventListener('mousemove', updateMouse);
+                });
+
+                return {
+                    mouseX,
+                    mouseY,
+                    options
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
     <me I love you forever </title>
     <style>
         :root {
