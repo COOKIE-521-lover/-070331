@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            cursor: none; /* 隐藏原生鼠标，使用自定义光标 */
+            cursor: none; /* 隐藏原生鼠标 */
             background-color: #064e3b;
             overflow: hidden;
+            margin: 0;
         }
 
         /* 自定义光标 */
@@ -23,7 +24,7 @@
             pointer-events: none;
             z-index: 999;
             border-radius: 50%;
-            transition: transform 0.1s ease;
+            transform: translate(-50%, -50%);
         }
 
         .cursor-outline {
@@ -34,6 +35,7 @@
             pointer-events: none;
             z-index: 998;
             border-radius: 50%;
+            transform: translate(-50%, -50%);
             transition: transform 0.15s ease-out;
         }
 
@@ -67,16 +69,19 @@
 
     <div id="app" class="w-full max-w-6xl px-10">
         <div class="cursor-dot" :style="{ left: mouseX + 'px', top: mouseY + 'px' }"></div>
-        <div class="cursor-outline" :style="{ left: (mouseX - 16) + 'px', top: (mouseY - 16) + 'px' }"></div>
+        <div class="cursor-outline" :style="{ left: mouseX + 'px', top: mouseY + 'px' }"></div>
 
-        <a href="https://cookie-521-lover.github.io/-070331/个人信息.html">
-            <div class="text-center mb-16">
-            <h1 class="text-4xl font-bold text-emerald-400 mb-4 tracking-widest uppercase">Ecology Vision</h1>
-            <p class="text-emerald-200/60">怎样才能令你难忘</p>
-        </div></a>
+        <div class="text-center mb-16">
+            <a href="https://cookie-521-lover.github.io/-070331/个人信息.html" class="inline-block">
+                <h1 class="text-4xl font-bold text-emerald-400 mb-4 tracking-widest uppercase">WSH STORYS</h1>
+                <p class="text-emerald-200/60">怎样才能令你难忘</p>
+            </a>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
-            <div v-for="(item, index) in options" :key="index" 
+            <div v-for="(item, index) in options" 
+                 :key="index" 
+                 @click="goTo(item.url)"
                  class="glass-card p-8 rounded-3xl flex flex-col items-center justify-center group cursor-pointer">
                 
                 <div class="mb-6">
@@ -95,16 +100,26 @@
 
         createApp({
             setup() {
-                const mouseX = ref(0);
-                const mouseY = ref(0);
+                const mouseX = ref(-100);
+                const mouseY = ref(-100);
 
+                // 在这里统一定义标签、图标和跳转链接
                 const options = ref([
-                    { label: '相册', icon: 'fa-solid fa-tree' },
-                    { label: '技能', icon: 'fa-solid fa-bolt' },
-                    { label: '风景', icon: 'fa-solid fa-droplet' },
-                    { label: '学习', icon: 'fa-solid fa-hippo' },
-                    { label: '工作', icon: 'fa-solid fa-recycle' }
+                    { label: '技能', icon: 'fa-solid fa-tree', url: 'https://github.com/COOKIE-521-lover/-070331' },
+                    { label: '相册', icon: 'fa-solid fa-bolt', url: '#' },
+                    { label: '风景', icon: 'fa-solid fa-droplet', url: '#' },
+                    { label: '学习', icon: 'fa-solid fa-hippo', url: '#' },
+                    { label: '工作', icon: 'fa-solid fa-recycle', url: '#' }
                 ]);
+
+                // 跳转方法
+                const goTo = (url) => {
+                    if (url && url !== '#') {
+                        window.location.href = url;
+                    } else {
+                        console.log("尚未设置链接");
+                    }
+                };
 
                 const updateMouse = (e) => {
                     mouseX.value = e.clientX;
@@ -122,15 +137,11 @@
                 return {
                     mouseX,
                     mouseY,
-                    options
+                    options,
+                    goTo
                 };
             }
         }).mount('#app');
     </script>
 </body>
 </html>
-    <me I love you forever </title>
-    <style>
-        :root {
-            --jungle-dark: #0a1a0a;
-            --jungle-green: #2d}
